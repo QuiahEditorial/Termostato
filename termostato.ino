@@ -1,18 +1,22 @@
+// Por Roberto A.Zavala
+// Breve : 
+// Libro : https://www.amazon.com.mx/dp/B074TTGLL2
+// 🙏🏼   : DNv7acPAeVBhTXbKv26itJecPG1SPy2o4F
+
 int   Tr = 2;                   // puerto del transistor
+int   PT;                       // PWM aplicado al transistor
 int   Tm = A0;                  // puerto del termistor
+float To = 50;                  // temperatura objetivo
 
 float A  = 0.001482484340;      // Coefientes de Steinhart-Hart
 float B  = 0.000167799949;
 float C  = 0.000000406675;
 int   R  = 9950;                // resistencia de divisor de voltaje
-float RT;                       // resistencia del transistor
+float RT;                       // resistencia del termistor
 float t;                        // temperatura
 
 float Vs;                       // voltaje de salida 
 int   Ve = 5;                   // voltaje de entrada
-
-int   PT;                       // PWM aplicado al transistor
-float To = 50;                  // temperatura objetivo
 
 int   dl = 10000;               // periodo de la rutina
 
@@ -42,5 +46,5 @@ void loop()
   else if ( t == To ) { analogWrite ( Tr , PT ); }               // si t = To se mantiene la potencia
   else                { analogWrite ( Tr, 0 );  PT = PT - 1; }   // si t > To se apaga y reduce en 1 la potencia
   
-  delay();
+  delay(dl);
 }
