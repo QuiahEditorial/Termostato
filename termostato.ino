@@ -37,7 +37,7 @@ void loop()
     dT = Aa + Ba * log( RT ) + Ca * pow( log(RT) , 3 );
     T  = 1/dT;
     T  = T - 273.15;
-    t = t + T; 
+    t = t + T;
     delay(200);
     }
   t = t/10;                     // obtiene la temperatura
@@ -45,6 +45,8 @@ void loop()
   if      ( t <  To ) { analogWrite ( Tr , PT ); PT = PT + 1; }  // si t < To aumenta la potencia
   else if ( t == To ) { analogWrite ( Tr , PT ); }               // si t = To se mantiene la potencia
   else                { analogWrite ( Tr, 0 );  PT = PT - 1; }   // si t > To se apaga y reduce en 1 la potencia
-  
+
+  Serial.print(to);   Serial.print("\t");    Serial.print(t);   Serial.print("\t");    Serial.println(PT);
+
   delay(dl);
 }
