@@ -1,10 +1,8 @@
-int Tta = 6;     //Transistor
+int Tr = 2;                   // puerto del transistor
+int Ra = 9950;                // resistencia de divisor de voltaje
+int Tm = A0;                  // puerto del termistor
 
-int Ra = 9950;  // Resistencia
-
-int Tra = A0;    //Termistor
-
-float Aa = 0.001482484340;
+float Aa = 0.001482484340;    // Coefientes de Steinhart-Hart
 float Ba = 0.000167799949;
 float Ca = 0.000000406675;
 
@@ -13,57 +11,46 @@ float Ta;
 float Tb;
 float Tc;
 
-float RT;
+float RT;                     // resistencia del transistor
 
-float Vsa;
-float Vsb;
-float Vsc;
-int   Ve = 5;
-
-float  PTa = 0;
-
-int x ;
+float Vsa;                    // voltaje de salida 
+int   Ve = 5;                 // voltaje de entrada
 
 void setup()
-{
-  lcd.begin(16, 2);
-  pinMode(Tta,OUTPUT);
-  x=0;
-}
+  {
+  pinMode( Tr,OUTPUT );
+  }
 
 void loop()
-{
+  {
+  t = 0;                                           // Temperatura
+  for (int i=0; i <= 9; i++)
+    {
+    Vs = (analogRead(Tra)/204.6);
+    RT = (Ra*Vsa)/(Ve-Vsa);
+    dT = Aa + Ba*log(RTa) + Ca*pow(log(RTa),3);
+    T  = 1/dT;
+    T  = T - 273.15;
+    t = t + T; 
+    delay(200);
+    }
+  t = t/10;
 
-x = x+1;
+  if      ( Ta <  To ) { analogWrite (Tta,round(PTa)); PTa = PTa + 1;}
+  else if ( Ta == To ) { analogWrite (Tta,PTa); }
+  else                 { analogWrite (Tta, 0 );  PTa = PTa - 1;}
 
-T = 0;
-for (int i=0; i <= 9; i++)
-{
-Vsa = (analogRead(Tra)/204.6);
-RTa = (Ra*Vsa)/(Ve-Vsa);
-dTa = Aa + Ba*log(RTa) + Ca*pow(log(RTa),3);
-ta = 1/dTa;
-T  = ta-273.15;
-Ta = Ta + T; 
-delay(200);
-}
-
-Ta = Ta / 10;
-if      ( Ta < 38 )  { analogWrite (Tta,round(PTa)); PTa = PTa + 1;}
-else if ( Ta == 38 ) { analogWrite (Tta,PTa); }
-else                 { analogWrite (Tta, 0 );  PTa = PTa - 1;}
-
-Tc = 0;
+  Tc = 0;
 for (int k=0; k <= 9; k++)
-{
-Vsc = (analogRead(Trc)/204.8);
-RTc = (Rc*Vsc)/(Ve-Vsc);
-dTc = Ac + Bc*log(RTc) + Cc*pow(log(RTc),3);
-tc  = 1/dTc;
-T   = tc-273.15;
-Tc  = T + Tc;
-delay(200);
-}
+  {
+  Vsc = (analogRead(Trc)/204.8);
+  RTc = (Rc*Vsc)/(Ve-Vsc);
+  dTc = Ac + Bc*log(RTc) + Cc*pow(log(RTc),3);
+  tc  = 1/dTc;
+  T   = tc-273.15;
+  Tc  = T + Tc;
+  delay(200);
+  }
 
 if      ( Tb < 45 ) { analogWrite (Ttc,round(PTc)); PTc = PTc + 1;}
 else if ( Tb = 45 ) { analogWrite (Ttc,PTc); }
